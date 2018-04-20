@@ -6,7 +6,7 @@ use Hackathon\Livefeed\Product;
 
 final class OrderItem
 {
-    const DEFAULT_ORDER_ITEMS = 2;
+    const DEFAULT_ORDER_ITEMS = 1;
 
     public $price;
     public $orderId;

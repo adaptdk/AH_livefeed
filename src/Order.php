@@ -38,7 +38,7 @@ class Order
         $this->postCode = Address::postcode();
 
         # OrderItems
-        $this->orderItems = OrderItem::create(5);
+        $this->orderItems = OrderItem::create(rand(1, 3));
         $this->totalPrice = array_sum(array_column($this->orderItems, 'price'));
     }
 
