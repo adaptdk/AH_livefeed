@@ -6,6 +6,8 @@ import {
   GoogleMap,
   Marker
 } from "react-google-maps";
+import Websocket from 'react-websocket';
+
 import { APIKEY } from "./constants/App";
 
 const Map = compose(
@@ -18,7 +20,7 @@ const Map = compose(
   withScriptjs,
   withGoogleMap
 )(props => (
-  <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+  <GoogleMap defaultZoom={4} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
       { props.markers }
   </GoogleMap>
 ));
@@ -35,7 +37,10 @@ class MyFancyComponent extends React.PureComponent {
 
   delayedChangeMarker = () => {
     setTimeout(() => {
-      this.setState({ markers: [(<Marker position={{ lat: -24.397, lng: 140.644 }} key="2" />)] })
+      this.setState({ markers: [
+        (<Marker position={{ lat: -34.397, lng: 150.644 }} key="1" />),
+        (<Marker position={{ lat: -24.397, lng: 140.644 }} key="2" />)
+      ] })
     }, 3000)
   }
 
