@@ -19,6 +19,8 @@ class Order
     public $postCode;
     public $orderItems;
     public $totalPrice;
+    public $lat;
+    public $long;
 
     /**
      * Order constructor.
