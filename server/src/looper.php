@@ -9,8 +9,11 @@ use Faker\Provider\da_DK\Address;
 
 use Hackathon\Livefeed\Order;
 use Hackathon\Livefeed\OrderFeed;
+use Gomoob\WebSocket\Client\WebSocketClient;
+use Gomoob\WebSocket\Request\WebSocketRequest;
 require 'TestAddresses.php';
 
+$phpClient = new WebSocketClient('ws://localhost:8081');
 
 while(true) {
     $addr = TestAddresses::getRandomAddress();
@@ -22,8 +25,12 @@ while(true) {
     $order->postCode = $addr->postnr;
 
     // UPDATE WEBSOCKET
-    var_dump($order);
-
+    echo "$order\n";
+/*
+    $response = $phpClient->send(
+        WebSocketRequest::create("$order")
+    );
+*/
     # sleep some time
     sleep(rand(1,4));
 }

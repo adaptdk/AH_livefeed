@@ -27,6 +27,10 @@ $feed = OrderFeed::getOrders(4);
 $order = Order::create();
 ```
 
+## start server loop
+php  server/src/looper.php
+
+
 ## Examples
 Example feed is included in `examples/livefeed.json`
 
