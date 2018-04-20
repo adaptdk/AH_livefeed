@@ -1,5 +1,4 @@
 # Adapt Hackathon Livefeed
-Adapt Hackathon - proof of concept, live feed of sales.
 
 **TL;DR: Broadcast orders as events, listen for events, handle order and update map.**
 
