@@ -1,5 +1,5 @@
 import React from "react";
-import { compose, withProps } from "recompose";
+import { compose, withProps, lifecycle, withState } from "recompose";
 import {
   withScriptjs,
   withGoogleMap,
@@ -8,17 +8,9 @@ import {
 } from "react-google-maps";
 import { APIKEY } from "./constants/App";
 
-const url = `https://maps.googleapis.com/maps/api/js?key=${APIKEY}&v=3.exp&libraries=geometry,drawing,places`
-let markers = (<Marker position={{ lat: -34.397, lng: 150.644 }} />);
-setTimeout(() => {
-  markers = (<Marker position={{ lat: -24.397, lng: 140.644 }} />);
-  console.log('blip');
-}, 2000);
-
 const Map = compose(
   withProps({
-    markers: markers,
-    googleMapURL: url,
+    googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${APIKEY}&v=3.exp&libraries=geometry,drawing,places`,
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />
@@ -27,8 +19,33 @@ const Map = compose(
   withGoogleMap
 )(props => (
   <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
-      { markers }
+      { props.markers }
   </GoogleMap>
 ));
 
-export default Map;
+
+class MyFancyComponent extends React.PureComponent {
+  state = {
+    markers: [<Marker position={{ lat: -34.397, lng: 150.644 }} key="1" />],
+  }
+
+  componentDidMount() {
+    this.delayedChangeMarker()
+  }
+
+  delayedChangeMarker = () => {
+    setTimeout(() => {
+      this.setState({ markers: [(<Marker position={{ lat: -24.397, lng: 140.644 }} key="2" />)] })
+    }, 3000)
+  }
+
+  render() {
+    return (
+      <Map
+        markers={this.state.markers}
+      />
+    )
+  }
+}
+
+export default MyFancyComponent;
