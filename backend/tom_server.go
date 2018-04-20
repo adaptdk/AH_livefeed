@@ -12,9 +12,13 @@ import (
 	"net/http"
   "fmt"
   "time"
+  "io/ioutil"
 	"github.com/gorilla/websocket"
   "encoding/json"
 )
+
+var brands = readBrands()
+var postCodes = readPostCodes()
 
 var addr = flag.String("addr", "localhost:8080", "http service address")
 
@@ -24,6 +28,17 @@ type Sale struct {
     IconUrl string
     Lat     string
     Lon     string
+}
+
+type Brand struct {
+    Name    string
+    IconUrl string
+}
+
+type PostCode struct {
+    PostCode  string
+    Lat       string
+    Lon       string
 }
 
 func echo(w http.ResponseWriter, r *http.Request) {
@@ -70,8 +85,26 @@ func getProducts(lastId int)(sales []Sale) {
   }
 
   sales = append(sales, mySale)
+  return
+}
 
+func readBrands()(brands []Brand) {
+  brandJson, err := ioutil.ReadFile("brands.json")
+  if err != nil {
+    log.Print("Could not read brands data:", err)
+    return
+  }
+  json.Unmarshal(brandJson, &brands)
+  return
+}
 
+func readPostCodes()(postCodes []PostCode) {
+  postCodesJson, err := ioutil.ReadFile("zip_point.json")
+  if err != nil {
+    log.Print("Could not read postCodes data:", err)
+    return
+  }
+  json.Unmarshal(postCodesJson, &postCodes)
   return
 }
 
