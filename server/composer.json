@@ -3,7 +3,8 @@
   "require": {
     "php": "~7.0",
     "fzaninotto/faker": "^1.7",
-    "nesbot/carbon": "^1.26"
+    "nesbot/carbon": "^1.26",
+    "gomoob/php-websocket-server": "^1.0.0"
   },
   "autoload": {
     "classmap": [
