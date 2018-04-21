@@ -1,0 +1,52 @@
+version: "2"
+
+services:
+
+
+  livefeed_redis:
+    image: redis
+
+  livefeed_php:
+    image: wodby/php:7.2-4.0.2
+    working_dir: /var/www/html
+    environment:
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -Slivefeed_mailhog:1025
+      PHP_XDEBUG: 1
+      PHP_XDEBUG_DEFAULT_ENABLE: 1
+      SSH_AUTH_SOCK: /ssh-agent
+    volumes:
+      - ./server:/var/www/html
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward local machine SSH key to docker
+    labels:
+      - 'traefik.backend=livefeed_web'
+      - 'traefik.port=8888'
+      - 'traefik.frontend.rule=Host:livefeed.ws.docker.localhost'
+
+  livefeed_mailhog:
+    image: mailhog/mailhog
+    labels:
+      - 'traefik.backend=livefeed_mailhog'
+      - 'traefik.port=8025'
+      - 'traefik.frontend.rule=Host:livefeed_mailhog.docker.localhost'
+
+  livefeed_traefik:
+    image: traefik
+    restart: unless-stopped
+    command: '-c /dev/null --web --docker --logLevel=DEBUG'
+    ports:
+      - '80:80'
+      - '8080:8080'
+      - '8888:8888'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+  livefeed_portainer:
+    image: portainer/portainer
+    restart: unless-stopped
+    command: '--no-auth'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    labels:
+      - traefik.backend=portainer
+      - traefik.port=9000
+      - 'traefik.frontend.rule=Host:portainer.docker.localhost'

@@ -4,9 +4,15 @@ namespace Hackathon\Livefeed;
 
 class TestAddresses {
 
-    public $addr;
+    private $addr = null;
 
-    private static function getShitLoadOfAddresses() { 
+
+    public function __construct() {
+      $this->addr =  self::getShitLoadOfAddresses();
+    }
+
+
+  private static function getShitLoadOfAddresses() {
 
         $ch = curl_init(); 
 
@@ -25,10 +31,8 @@ class TestAddresses {
 
     }
 
-    public static function getRandomAddress() {
-        if (!$addr) $addr = self::getShitLoadOfAddresses();
-//        var_dump($addr);
-        return $addr[array_rand($addr)];
+    public function getRandomAddress() {
+       return $this->addr[array_rand($this->addr)];
     }
 
 }

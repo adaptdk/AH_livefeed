@@ -8,7 +8,7 @@ import {
 } from "react-google-maps";
 import Websocket from 'react-websocket';
 
-import { APIKEY } from "./constants/App";
+import { APIKEY, WEBSOCKETS_URL } from "./constants/App";
 
 const Map = compose(
   withProps({
@@ -20,35 +20,40 @@ const Map = compose(
   withScriptjs,
   withGoogleMap
 )(props => (
-  <GoogleMap defaultZoom={4} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+  <GoogleMap defaultZoom={6} defaultCenter={{ lat: 55.676098, lng: 12.568337 }}>
       { props.markers }
   </GoogleMap>
 ));
 
 
 class MyFancyComponent extends React.PureComponent {
-  state = {
-    markers: [<Marker position={{ lat: -34.397, lng: 150.644 }} key="1" />],
+  constructor(props) {
+    super(props);
+    this.state = {
+      markers: [],
+    };
   }
 
-  componentDidMount() {
-    this.delayedChangeMarker()
-  }
+  orderToMarker = (order) => (
+    <Marker position={{ lat: order.lat, lng: order.long }} key={order.id} />
+  );
 
-  delayedChangeMarker = () => {
-    setTimeout(() => {
-      this.setState({ markers: [
-        (<Marker position={{ lat: -34.397, lng: 150.644 }} key="1" />),
-        (<Marker position={{ lat: -24.397, lng: 140.644 }} key="2" />)
-      ] })
-    }, 3000)
+  handleData = (data) => {
+    const order = JSON.parse(JSON.parse(data));
+    this.setState({ markers: [...this.state.markers, this.orderToMarker(order)] });
   }
 
   render() {
     return (
-      <Map
-        markers={this.state.markers}
-      />
+      <div>
+        <Map
+          markers={this.state.markers}
+        />
+        <Websocket
+          url={ WEBSOCKETS_URL }
+          onMessage={ this.handleData.bind(this) }
+        />
+      </div>
     )
   }
 }
