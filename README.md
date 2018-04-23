@@ -2,6 +2,10 @@
 
 **TL;DR: Broadcast orders as events, listen for events, handle order and update map.**
 
+## Demo
+
+[Demo of how-to](https://drive.google.com/file/d/14AqqPNBScDOVXyihoLsVPH5fNsVAfdSN/view)
+
 ## Project objective
 
 - Main objective is a live-updating web interface displaying orders on a map as they happen.

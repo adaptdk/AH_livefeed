@@ -5,7 +5,7 @@ namespace Hackathon\Livefeed;
 require __DIR__ . '/../vendor/autoload.php';
 use Gomoob\WebSocket\Client\WebSocketClient;
 use Gomoob\WebSocket\Request\WebSocketRequest;
-require 'TestAddresses.php';
+use Hackathon\Livefeed\TestAddresses;
 
 $phpClient = new WebSocketClient('ws://localhost:8888');
 $testAddresses = new TestAddresses();
